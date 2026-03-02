@@ -14,6 +14,14 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
 
+  const handleLogin = () => {
+    if (email === "pedro@gmail.com" && password === "123456") {
+      navigation.navigate("main");
+    } else {
+      Alert.alert("Erro", "E-mail ou senha incorretos.");
+    }
+  };
+
   return (
     <View style={styles.container}>
       <TextInput
@@ -29,6 +37,9 @@ const Login = () => {
         onChangeText={setPassword}
         secureTextEntry={true}
       />
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <Text style={styles.buttonText}>Entrar</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -47,6 +58,17 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 10,
     width: "80%",
+  },
+  button: {
+    backgroundColor: "#b71ef4",
+    borderRadius: 5,
+    padding: 15,
+    width: "80%",
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#FFF",
+    fontWeight: "bold",
   },
 });
 
