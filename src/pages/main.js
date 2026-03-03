@@ -2,11 +2,58 @@ import React, { Component } from "react";
 import { Keyboard, ActivityIndicator } from "react-native";
 import Icon from "@expo/vector-icons/MaterialIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import api from "../services/api.js";
+import Api from "../services/api.js";
 import {} from "../styles.js";
 
 export default class Main extends Component {
-  render() {
-    return <></>;
+  state = {
+    newUser: "",
+    users: [],
+    loading: false,
+  };
+
+  async componentDidMount() {
+    const users = await AsyncStorage.getItem("users");
+    if (users) {
+      this.setState({ users: JSON.parse(users) });
+    }
   }
+
+  componentDidUpdate(_, prevState) {
+    const { users } = this.state;
+    if (prevState.users !== users) {
+      AsyncStorage.setItem("users", JSON.stringify(users));
+    }
+  }
+
+  handleAddUser = async () => {
+    try {
+      const { newUser, users } = this.state;
+      this.setState({ loading: true });
+
+      const response = await Api.get(`/users/${newUser}`);
+      if (users.find((user) => user.login === response.data.login)) {
+        alert("Usuário já adicionado");
+        this.setState({ loading: false });
+        return;
+      }
+
+      const data = {
+        name: response.data.name,
+        login: response.data.login,
+        bio: response.data.bio,
+        avatar: response.data.avatar_url,
+      };
+
+      this.setState({
+        users: [...users, data],
+        newUser: "",
+        loading: false,
+      });
+
+      Keyboard.dismiss();
+    } catch (error) {
+      alert("Usuário não encontrado");
+    }
+  };
 }
