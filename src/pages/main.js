@@ -3,7 +3,19 @@ import { Keyboard, ActivityIndicator } from "react-native";
 import Icon from "@expo/vector-icons/MaterialIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Api from "../services/api.js";
-import {} from "../styles.js";
+import {
+  Container,
+  Form,
+  Input,
+  SubmitButton,
+  List,
+  User,
+  Avatar,
+  Name,
+  Bio,
+  ProfileButton,
+  ProfileButtonText,
+} from "../styles.js";
 
 export default class Main extends Component {
   state = {
@@ -54,6 +66,11 @@ export default class Main extends Component {
       Keyboard.dismiss();
     } catch (error) {
       alert("Usuário não encontrado");
+      this.setState({ loading: false });
     }
   };
+
+  render() {
+    const { newUser, users, loading } = this.state;
+  }
 }
