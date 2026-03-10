@@ -15,7 +15,7 @@ const Login = () => {
   const navigation = useNavigation();
 
   const handleLogin = () => {
-    if (email === "pedro@gmail.com" && password === "123456") {
+    if (email === "pedro" && password === "123") {
       navigation.navigate("main");
     } else {
       Alert.alert("Erro", "E-mail ou senha incorretos.");
