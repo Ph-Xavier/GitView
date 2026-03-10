@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Keyboard, ActivityIndicator } from "react-native";
 import Icon from "@expo/vector-icons/MaterialIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Api from "../services/api.js";
+import api from "../services/api.js";
 import {
   Container,
   Form,
@@ -43,7 +43,7 @@ export default class Main extends Component {
       const { newUser, users } = this.state;
       this.setState({ loading: true });
 
-      const response = await Api.get(`/users/${newUser}`);
+      const response = await api.get(`/users/${newUser}`);
       if (users.find((user) => user.login === response.data.login)) {
         alert("Usuário já adicionado");
         this.setState({ loading: false });
@@ -72,5 +72,42 @@ export default class Main extends Component {
 
   render() {
     const { newUser, users, loading } = this.state;
+    return (
+      <Container>
+        <Form>
+          <Input
+            autoCorrect={false}
+            autoCapitalize="none"
+            placeholder="Adicionar Usuário"
+            value={newUser}
+            onChangeText={(text) => this.setState({ newUser: text })}
+            returnKeyType="send"
+            onSubmitEditing={this.handleAddUser}
+          />
+          <SubmitButton loading={loading} onPress={this.handleAddUser}>
+            {loading ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Icon name="add" size={20} color="#fff" />
+            )}
+          </SubmitButton>
+        </Form>
+        <List
+          showsVerticalScrollIndicator={false}
+          data={users}
+          keyExtractor={(user) => user.login}
+          renderItem={({ item }) => (
+            <User>
+              <Avatar source={{ uri: item.avatar }} />
+              <Name>{item.name}</Name>
+              <Bio>{item.bio}</Bio>
+              <ProfileButton onPress={() => {}}>
+                <ProfileButtonText>Ver Perfil</ProfileButtonText>
+              </ProfileButton>
+            </User>
+          )}
+        />
+      </Container>
+    );
   }
 }
