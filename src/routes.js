@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Login from "./pages/login";
 import Main from "./pages/main";
 import User from "./pages/user";
+import Cadastro from "./pages/cadastro";
 
 const Stack = createStackNavigator();
 
@@ -16,6 +17,16 @@ export default function Routes() {
           component={Login}
           options={{
             title: "Login",
+            headerTitleAlign: "center",
+            headerStyle: { backgroundColor: "#b71ef4" },
+            headerTitleStyle: { color: "#fff", fontWeight: "bold" },
+          }}
+        />
+        <Stack.Screen
+          name="cadastro"
+          component={Cadastro}
+          options={{
+            title: "Cadastro de Usuário",
             headerTitleAlign: "center",
             headerStyle: { backgroundColor: "#b71ef4" },
             headerTitleStyle: { color: "#fff", fontWeight: "bold" },
